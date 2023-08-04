@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Vista de Matrices
+{% endblock %}
+
+{% block head %}
+  <!-- Agregar estilos bootstrap o cualquier otra hoja de estilos que necesites -->
+{% endblock %}
+
+{% block content %}
+  <h2>Matrices Dispositivos</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nombre Unidad</th>
+          <th>Versión</th>
+          <!-- Agrega más encabezados de columna según los campos que quieras mostrar -->
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for nombre_unidad, matrices in matrices_dispositivos.items() %}
+          <tr>
+            <th colspan="4">
+              <a href="{{ url_for('mostrar_matriz_dispositivos', udm_id=matrices[0].udm_id) }}" class="btn btn-primary btn-sm">{{ nombre_unidad }}</a>
+            </th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Matrices Medicamentos</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nombre Unidad</th>
+          <th>Versión</th>
+          <!-- Agrega más encabezados de columna según los campos que quieras mostrar -->
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for nombre_unidad, matrices in matrices_medicamentos.items() %}
+          <tr>
+            <th colspan="4">
+              <a href="{{ url_for('mostrar_matriz_medicamentos', udm_id=matrices[0].udm_id) }}" class="btn btn-primary btn-sm">{{ nombre_unidad }}</a>
+            </th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

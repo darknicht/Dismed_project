@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Listado de Matrices Dispositivos
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+  <h2>Listado de Matrices Dispositivos</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Acciones</th>
+          <th>Item Nro</th>
+          <th>Nom Subcomite</th>
+          <th>Nro Partida Pres</th>
+          <th>Nom Partida Pres</th>
+          <th>CUDIM</th>
+          <th>Cod IESS</th>
+          <th>Cod AS400</th>
+          <th>Nom Generico</th>
+          <th>Espec Tec</th>
+          <th>Pres Unimed</th>
+          <th>Lvl Riesgo Suger</th>
+          <th>Lvl Aten IA</th>
+          <th>Lvl Aten IB</th>
+          <th>Lvl Aten IC</th>
+          <th>Lvl Aten II</th>
+          <th>Lvl Aten III</th>
+          <th>Lvl Aten APH</th>
+          <th>Espec Subespec</th>
+          <th>Consumo Prom Proyec</th>
+          <th>Perioci Consumo</th>
+          <th>Saldo Bodega Actual</th>
+          <th>Proyecc Saldo</th>
+          <th>Cant Pend Entre</th>
+          <th>Cod Proceso</th>
+          <th>Req Total Proyectado</th>
+          <th>Stock Seguridad</th>
+          <th>Cant Program Inicial</th>
+          <th>Cant Devol Prestam</th>
+          <th>Cant Final Required</th>
+          <th>Prec Unit Ref</th>
+          <th>Pres Ref Total</th>
+          <th>Dispo DM</th>
+          <th>Lvl Abastec</th>
+          <th>Tip Proc CP</th>
+          <th>Prim Cuatri Cant</th>
+          <th>Prim Cuatri Mont</th>
+          <th>Seg Cuatri Cant</th>
+          <th>Seg Cuatri Mont</th>
+          <th>Terc Cuatri Cant</th>
+          <th>Terc Cuatri Mont</th>
+          <th>Priorizacion</th>
+          <th>Observaciones</th>
+          <!-- Agrega más encabezados de columna según las variables que quieras mostrar -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for matriz_dispositivo in matrices_dispositivos %}
+          <tr>
+            <td>
+              <a href="#" class="btn btn-primary btn-sm edit-btn" data-toggle="modal" data-target="#editModal" data-id="{{ matriz_dispositivo.idmatriz }}"><i class="fas fa-pencil-alt"></i> Editar</a>
+            </td>
+            <td>{{ matriz_dispositivo.item_nro }}</td>
+            <td>{{ matriz_dispositivo.nom_subcomite }}</td>
+            <td>{{ matriz_dispositivo.nro_partida_pres }}</td>
+            <td>{{ matriz_dispositivo.nom_partida_pres }}</td>
+            <td>{{ matriz_dispositivo.cudim }}</td>
+            <td>{{ matriz_dispositivo.cod_iess }}</td>
+            <td>{{ matriz_dispositivo.cod_as400 }}</td>
+            <td>{{ matriz_dispositivo.nom_generico }}</td>
+            <td>{{ matriz_dispositivo.espec_tec }}</td>
+            <td>{{ matriz_dispositivo.pres_unimed }}</td>
+            <td>{{ matriz_dispositivo.lvl_riesgo_suger }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_ia }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_ib }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_ic }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_ii }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_iii }}</td>
+            <td>{{ matriz_dispositivo.lvl_aten_aph }}</td>
+            <td>{{ matriz_dispositivo.espec_subespec }}</td>
+            <td>{{ matriz_dispositivo.consumo_prom_proyec }}</td>
+            <td>{{ matriz_dispositivo.perioci_consumo }}</td>
+            <td>{{ matriz_dispositivo.saldo_bodega_actual }}</td>
+            <td>{{ matriz_dispositivo.proyecc_saldo }}</td>
+            <td>{{ matriz_dispositivo.cant_pend_entre }}</td>
+            <td>{{ matriz_dispositivo.cod_proceso }}</td>
+            <td>{{ matriz_dispositivo.req_total_proyectado }}</td>
+            <td>{{ matriz_dispositivo.stock_seguridad }}</td>
+            <td>{{ matriz_dispositivo.cant_program_inicial }}</td>
+            <td>{{ matriz_dispositivo.cant_devol_prestam }}</td>
+            <td>{{ matriz_dispositivo.cant_final_required }}</td>
+            <td>{{ matriz_dispositivo.prec_unit_ref }}</td>
+            <td>{{ matriz_dispositivo.pres_ref_total }}</td>
+            <td>{{ matriz_dispositivo.dispo_dm }}</td>
+            <td>{{ matriz_dispositivo.lvl_abastec }}</td>
+            <td>{{ matriz_dispositivo.tip_proc_cp }}</td>
+            <td>{{ matriz_dispositivo.prim_cuatri_cant }}</td>
+            <td>{{ matriz_dispositivo.prim_cuatri_mont }}</td>
+            <td>{{ matriz_dispositivo.seg_cuatri_cant }}</td>
+            <td>{{ matriz_dispositivo.seg_cuatri_mont }}</td>
+            <td>{{ matriz_dispositivo.terc_cuatri_cant }}</td>
+            <td>{{ matriz_dispositivo.terc_cuatri_mont }}</td>
+            <td>{{ matriz_dispositivo.priorizacion }}</td>
+            <td>{{ matriz_dispositivo.observaciones }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <a href="{{ url_for('vista_matrices') }}" class="btn btn-secondary">Volver</a>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Unidades Médicas</h1>
+  {% with messages = messages %}
+    {% if messages %}
+      <div class="alert alert-success mt-4">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Código de la Unidad</th>
+          <th>Nombre de la Unidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for unidadmd in unidadesmd %}
+          <tr>
+            <td>{{ unidadmd.uni_codigo }}</td>
+            <td>{{ unidadmd.nombre_unidad }}</td>
+            <td>
+              <a href="{{ url_for('editar_unidadmd', idudm=unidadmd.idudm) }}" class="btn btn-info">Editar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

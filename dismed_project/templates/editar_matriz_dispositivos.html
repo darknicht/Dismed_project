@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Editar Matriz Dispositivos
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+  <h2>Editar Matriz Dispositivos</h2>
+  <form method="post">
+    <!-- Agrega aquí los campos del formulario para editar los datos -->
+    <!-- Puedes utilizar los nombres de las variables del modelo como atributos "name" de los campos -->
+    <div class="form-group">
+      <label for="item_nro">Item Nro</label>
+      <input type="text" class="form-control" id="item_nro" name="item_nro" value="{{ matriz_dispositivo.item_nro }}">
+    </div>
+    <div class="form-group">
+      <label for="nom_subcomite">Nom Subcomite</label>
+      <input type="text" class="form-control" id="nom_subcomite" name="nom_subcomite" value="{{ matriz_dispositivo.nom_subcomite }}">
+    </div>
+    <!-- Agrega más campos del formulario según las variables que desees editar -->
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="{{ url_for('vista_matrices') }}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}
