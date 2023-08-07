@@ -1,1 +1,0 @@
-from .inicio_view import inicio_view

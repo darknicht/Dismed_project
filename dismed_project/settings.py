@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'inicio',
     'departamentos',
     'unidadesmd',
+    'matriz_dispositivos',
+    'matriz_medicamentos',
 ]
 
 MIDDLEWARE = [

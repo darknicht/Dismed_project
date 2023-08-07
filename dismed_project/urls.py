@@ -7,5 +7,7 @@ urlpatterns = [
     path('buscador/', include('buscador.urls')),
     path('departamentos/', include('departamentos.urls')),
     path('unidadesmd/', include('unidadesmd.urls')),
+    path('matriz_dispositivos/', include('matriz_dispositivos.urls')),
+    path('matriz_medicamentos/', include('matriz_medicamentos.urls')),
     path('admin/', admin.site.urls),
 ]

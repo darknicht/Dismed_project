@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MatricesConfig(AppConfig):
+class MatrizDispositivosConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'matrices'
+    name = 'matriz_dispositivos'
