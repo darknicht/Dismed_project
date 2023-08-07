@@ -2,15 +2,7 @@
 
 {% block content %}
   <h1>Unidades Médicas</h1>
-  {% with messages = messages %}
-    {% if messages %}
-      <div class="alert alert-success mt-4">
-        {% for message in messages %}
-          {{ message }}
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
+ 
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -26,7 +18,7 @@
             <td>{{ unidadmd.uni_codigo }}</td>
             <td>{{ unidadmd.nombre_unidad }}</td>
             <td>
-              <a href="{{ url_for('editar_unidadmd', idudm=unidadmd.idudm) }}" class="btn btn-info">Editar</a>
+              <a href="{% url 'editar_unidadmd_view' idudm=unidadmd.idudm %}" class="btn btn-info">Editar</a>
             </td>
           </tr>
         {% endfor %}

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'buscador',
     'inicio',
     'departamentos',
+    'unidadesmd',
 ]
 
 MIDDLEWARE = [

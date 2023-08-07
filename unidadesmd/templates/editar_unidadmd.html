@@ -3,6 +3,7 @@
   <h1>Editar Unidad Médica</h1>
   <h2>{{ unidadmd.nombre_unidad }}</h2>
   <form action="{{ editar_url }}" method="POST">
+    {% csrf_token %}
     <div class="form-group">
       <label for="uni_codigo">Código de la Unidad:</label>
       <input type="text" class="form-control" id="uni_codigo" name="uni_codigo" value="{{ unidadmd.uni_codigo }}">
@@ -80,6 +81,6 @@
       <input type="text" class="form-control" id="distrito" name="distrito" value="{{ unidadmd.distrito }}">
     </div>
     <button type="submit" class="btn btn-primary">Guardar cambios</button>
-    <a href="{{ url_for('unidadesmd') }}" class="btn btn-secondary">Volver</a>
+    <a href="{% url 'mostrar_unidadesmd' %}" class="btn btn-secondary">Volver</a>
   </form>
 {% endblock %}

@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 
 #Views
-from views.unidadesmd_view import mostrar_unidadesmd, mostrar_unidadmd, editar_unidadmd_view
 from views.matrices_view import mostrar_vista_matrices
 
 #models
@@ -17,20 +16,6 @@ app.secret_key = secrets.token_hex(16)
 # Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
-
-# Rutas
-# Unidades Médicas
-@app.route('/unidadesmd/')
-def unidadesmd():
-    return mostrar_unidadesmd()
-
-@app.route('/unidadesmd/<int:idudm>')
-def unidadmd(idudm):
-    return mostrar_unidadmd(idudm)
-
-@app.route('/unidadesmd/editar_unidadmd/<int:idudm>', methods=['GET', 'POST'])
-def editar_unidadmd(idudm):
-    return editar_unidadmd_view(idudm)
 
 # Matrices
 @app.route('/matrices')
