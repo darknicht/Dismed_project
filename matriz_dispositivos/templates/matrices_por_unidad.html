@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Matrices para {{ unidad.nombre_unidad }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ unidad.nombre_unidad }}</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th></th>
+          <th>Número de ítem</th>
+          <th>Nombre Subcomité</th>
+          <th>N° Partida Presupuestaria</th>
+          <th>Nombre Partida Presupuestaria</th>
+          <th>CUDIM de referencia</th>
+          <th>Código IESS</th>
+          <th>Código AS400</th>
+          <th>Nombre Genérico</th>
+          <th>Especificación Técnica</th>
+          <th>Presentación Unidad de Medida</th>
+          <th>Nivel de Riesgo Sugerido</th>
+          <th>Nivel de Atención IA</th>
+          <th>Nivel de Atención IB</th>
+          <th>Nivel de Atención IC</th>
+          <th>Nivel de Atención II</th>
+          <th>Nivel de Atención III</th>
+          <th>Nivel de Atención APH</th>
+          <th>Especialidad/Subespecialidad</th>
+          <th>Consumo Promedio Proyectado(CPP)</th>
+          <th>Periodicidad de Consumo(PC)</th>
+          <th>Saldo en Bodega Actual(SBA)</th>
+          <th>Proyección de Saldo</th>
+          <th>Cantidad Pendiente de Entrega(CPE)</th>
+          <th>Código de Proceso</th>
+          <th>Requerimiento Total Proyectado(RTP)</th>
+          <th>Stock de Seguridad(SS)</th>
+          <th>Cantidad a Programar Inicialmente(CPI)</th>
+          <th>Cantidad de Devolución por Préstamo(CDP)</th>
+          <th>Cantidad Final a Requerir(CFR)</th>
+          <th>Precio Unitario Referencial(PUR)</th>
+          <th>Precio Referencial Total(PRT)</th>
+          <th>Disponibilidad de Dispositivo Médico</th>
+          <th>Nivel de Abastecimiento</th>
+          <th>Tipo de Procedimiento de Contratación Pública</th>
+          <th>Primera Cuatrimestre Cantidad</th>
+          <th>Primera Cuatrimestre Monto</th>
+          <th>Segunda Cuatrimestre Cantidad</th>
+          <th>Segunda Cuatrimestre Monto</th>
+          <th>Tercera Cuatrimestre Cantidad</th>
+          <th>Tercera Cuatrimestre Monto</th>
+          <th>Priorización</th>
+          <th>Observaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for matriz in matrices %}
+          <tr>
+            <td>
+              <!-- Ícono de lápiz que abre el modal -->
+              <a href="#" data-mdb-toggle="modal" data-mdb-target="#Modal{{ matriz.id }}"><i class="fa fa-pencil"></i></a>
+            </td>
+            <td>{{ matriz.item_nro }}</td>
+            <td>{{ matriz.nom_subcomite }}</td>
+            <td>{{ matriz.nro_partida_pres }}</td>
+            <td>{{ matriz.nom_partida_pres }}</td>
+            <td>{{ matriz.cudim }}</td>
+            <td>{{ matriz.cod_iess }}</td>
+            <td>{{ matriz.cod_as400 }}</td>
+            <td>{{ matriz.nom_generico }}</td>
+            <td>{{ matriz.espec_tec }}</td>
+            <td>{{ matriz.pres_unimed }}</td>
+            <td>{{ matriz.lvl_riesgo_suger }}</td>
+            <td>{{ matriz.lvl_aten_ia }}</td>
+            <td>{{ matriz.lvl_aten_ib }}</td>
+            <td>{{ matriz.lvl_aten_ic }}</td>
+            <td>{{ matriz.lvl_aten_ii }}</td>
+            <td>{{ matriz.lvl_aten_iii }}</td>
+            <td>{{ matriz.lvl_aten_aph }}</td>
+            <td>{{ matriz.espec_subespec }}</td>
+            <td>{{ matriz.consumo_prom_proyec }}</td>
+            <td>{{ matriz.perioci_consumo }}</td>
+            <td>{{ matriz.saldo_bodega_actual }}</td>
+            <td>{{ matriz.proyecc_saldo }}</td>
+            <td>{{ matriz.cant_pend_entre }}</td>
+            <td>{{ matriz.cod_proceso }}</td>
+            <td>{{ matriz.req_total_proyectado }}</td>
+            <td>{{ matriz.stock_seguridad }}</td>
+            <td>{{ matriz.cant_program_inicial }}</td>
+            <td>{{ matriz.cant_devol_prestam }}</td>
+            <td>{{ matriz.cant_final_required }}</td>
+            <td>{{ matriz.prec_unit_ref }}</td>
+            <td>{{ matriz.pres_ref_total }}</td>
+            <td>{{ matriz.dispo_dm }}</td>
+            <td>{{ matriz.lvl_abastec }}</td>
+            <td>{{ matriz.tip_proc_cp }}</td>
+            <td>{{ matriz.prim_cuatri_cant }}</td>
+            <td>{{ matriz.prim_cuatri_mont }}</td>
+            <td>{{ matriz.seg_cuatri_cant }}</td>
+            <td>{{ matriz.seg_cuatri_mont }}</td>
+            <td>{{ matriz.terc_cuatri_cant }}</td>
+            <td>{{ matriz.terc_cuatri_mont }}</td>
+            <td>{{ matriz.priorizacion }}</td>
+            <td>{{ matriz.observaciones }}</td>
+          </tr>
+
+          <!-- Modal para editar matriz -->
+          <div class="modal fade" id="Modal{{ matriz.id }}" tabindex="-1" aria-labelledby="ModalLabel{{ matriz.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Editar Matriz</h5>
+                  <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <!-- Aquí puedes añadir campos de formulario para cada uno de los atributos de la matriz -->
+                  <!--    Por ejemplo:
+                  <div class="mb-3">
+                    <label for="item_nro" class="form-label">Número de ítem</label>
+                    <input type="text" class="form-control" id="item_nro" value="{{ matriz.item_nro }}">
+                  </div>
+                     -->
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Guardar cambios</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

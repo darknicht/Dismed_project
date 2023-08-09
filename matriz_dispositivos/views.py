@@ -2,14 +2,24 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import MatrizDispositivos
 from django.urls import reverse
+from unidadesmd.models import UnidadMedica
+from django.db.models import Max
+from django.db import models
+
 
 def mostrar_matriz_dispositivos(request):
-    matrices = MatrizDispositivos.objects.all()
-    return render(request, 'vista_matrices_dispositivos.html', {'matrices': matrices})
+    unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version'))
+    return render(request, 'vista_matrices_dispositivos.html', {'unidades_medicas': unidades_medicas})
 
 def mostrar_matriz_dispositivo(request, idmatriz):
     matriz = get_object_or_404(MatrizDispositivos, pk=idmatriz)
     return render(request, 'matriz_dispositivo.html', {'matriz': matriz})
+
+def mostrar_matriz_por_unidad(request, unidad_idudm):
+    unidad = get_object_or_404(UnidadMedica, pk=unidad_idudm)
+    ultima_version = MatrizDispositivos.objects.filter(unidad_medica=unidad).aggregate(models.Max('version'))['version__max']
+    matrices = MatrizDispositivos.objects.filter(unidad_medica=unidad, version=ultima_version)
+    return render(request, 'matrices_por_unidad.html', {'unidad': unidad, 'matrices': matrices})
 
 def editar_matriz_dispositivo_view(request, idmatriz):
     matriz = get_object_or_404(MatrizDispositivos, pk=idmatriz)

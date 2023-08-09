@@ -22,7 +22,7 @@
       <tbody>
         {% for matriz in matrices %}
           <tr>
-            <td>{{ matriz.udm_id.nombre_unidad }}</td> <!-- Asumiendo que UnidadMedica tiene un campo nombre_unidad -->
+            <td>{{ matriz.unidad_medica.nombre_unidad }}</td> <!-- Asumiendo que UnidadMedica tiene un campo nombre_unidad -->
             <td>{{ matriz.version }}</td>
             <td>
               <a href="{% url 'mostrar_matriz_medicamento' matriz.id %}" class="btn btn-primary btn-sm">Ver detalles</a>

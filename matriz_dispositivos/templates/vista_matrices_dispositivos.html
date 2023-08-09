@@ -14,18 +14,18 @@
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
-          <th>Nombre Unidad</th>
-          <th>Versión</th>
+          <th>Unidad Médica</th>
+          <th>Última Versión</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {% for matriz in matrices %}
+        {% for unidad in unidades_medicas %}
           <tr>
-            <td>{{ matriz.udm_id.nombre_unidad }}</td> <!-- Asumiendo que UnidadMedica tiene un campo nombre_unidad -->
-            <td>{{ matriz.version }}</td>
+            <td><a href="{% url 'mostrar_matriz_por_unidad' unidad.idudm %}">{{ unidad.nombre_unidad }}</a></td>
+            <td>{{ unidad.ultima_version }}</td>
             <td>
-              <a href="{% url 'mostrar_matriz_dispositivo' matriz.id %}" class="btn btn-primary btn-sm">Ver detalles</a>
+              <!-- Aquí puedes añadir botones adicionales si lo necesitas -->
             </td>
           </tr>
         {% endfor %}
