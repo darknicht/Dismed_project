@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import MatrizDispositivos
 
-# Register your models here.
+class MatrizDispositivosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'unidad_medica', 'version', 'matrix', 'proyecc_saldo')  # Agrega 'proyecc_saldo' a la lista
+    # Resto de tus configuraciones del admin...
+
+admin.site.register(MatrizDispositivos, MatrizDispositivosAdmin)
