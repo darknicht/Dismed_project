@@ -55,6 +55,7 @@ class MatrizDispositivos(models.Model):
 
     class Meta:
         db_table = 'matriz_dispositivos'
+        unique_together = ['cod_as400', 'unidad_medica', 'version']
         
 class Periodo(models.Model):
     id = models.AutoField(primary_key=True)

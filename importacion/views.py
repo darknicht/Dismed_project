@@ -8,7 +8,7 @@ from importacion.models import RegistroImportacion
 def validate_and_clean_data(data):
     # Limpia y valida el campo 'cant_pend_entre'
     data['cant_pend_entre'].fillna(0, inplace=True)
-    # Aquí puedes añadir más validaciones y limpiezas según sea necesario
+    # Aquí añadir más validaciones y limpiezas según sea necesario
     return data
 
 def upload_matriz(request):
@@ -16,17 +16,18 @@ def upload_matriz(request):
         messages.info(request, "Archivo recibido")
         excel_file = request.FILES["excel_file"]
         unidad_medica_selected = request.POST.get('unidad_medica')
-        
-        # Buscar la última versión en la base de datos y incrementarla en 1
-        last_version = MatrizDispositivos.objects.all().order_by('-version').first()
-        new_version = last_version.version + 1 if last_version else 1
-        
+
         try:
             unidad = UnidadMedica.objects.get(pk=unidad_medica_selected)
+
+            # Buscar la última versión en la base de datos para esa unidad médica y incrementarla en 1
+            last_version = MatrizDispositivos.objects.filter(unidad_medica=unidad).order_by('-version').first()
+            new_version = last_version.version + 1 if last_version else 1
+
             data = pd.read_excel(excel_file)
             data = validate_and_clean_data(data)
             for _, row in data.iterrows():
-                matriz = MatrizDispositivos() 
+                matriz = MatrizDispositivos()
                 matriz.unidad_medica = unidad
                 matriz.version = new_version
                 matriz.item_nro = row['item_nro']
@@ -74,13 +75,25 @@ def upload_matriz(request):
                 matriz.observaciones = row['observaciones']
                 matriz.user_modify = request.user.username
                 matriz.user_create = request.user.username
-                matriz.save()
-            
+
+                # Antes de guardar, verificamos si el registro ya existe
+                exists = MatrizDispositivos.objects.filter(
+                    cod_as400=row['cod_as400'], 
+                    unidad_medica=unidad,
+                    version=new_version
+                ).exists()
+
+                if not exists:
+                    matriz.save()
+                else:
+                    messages.warning(request, f'El registro con cod_as400 {row["cod_as400"]} ya existe para esa combinación y no fue importado.')
+
             # Crear un registro en RegistroImportacion
             registro = RegistroImportacion(
                 usuario=request.user,
-                archivo_importado=excel_file,
-                version=new_version
+                archivo_importado=excel_file,  # Esta línea se encarga de guardar el archivo con el nombre personalizado
+                version=new_version,
+                unidad_medica=unidad
             )
             registro.save()
 
