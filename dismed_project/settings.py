@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'unidadesmd',
     'matriz_dispositivos',
     'matriz_medicamentos',
+    'importacion',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'dismed_project.urls'
+
+#Archivos Media importados
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 TEMPLATES = [
     {

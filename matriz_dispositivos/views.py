@@ -3,9 +3,8 @@ from django.contrib import messages
 from .models import MatrizDispositivos
 from django.urls import reverse
 from unidadesmd.models import UnidadMedica
-from django.db.models import Max, F, Case, Value, When
+from django.db.models import Max
 from django.db import models
-
 
 def mostrar_matriz_dispositivos(request):
     unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version'))
@@ -19,31 +18,14 @@ def mostrar_matriz_por_unidad(request, unidad_idudm):
     unidad = get_object_or_404(UnidadMedica, pk=unidad_idudm)
     ultima_version = MatrizDispositivos.objects.filter(unidad_medica=unidad).aggregate(models.Max('version'))['version__max']
     matrices = MatrizDispositivos.objects.filter(unidad_medica=unidad, version=ultima_version).order_by('item_nro')
-
-    updated_matrices = []
-    for matriz in matrices:
-        if matriz.perioci_consumo == "Mensual":
-            proyecc_saldo = max(matriz.saldo_bodega_actual - matriz.consumo_prom_proyec * 3, 0)
-        elif matriz.perioci_consumo == "Semestral":
-            proyecc_saldo = max(matriz.saldo_bodega_actual - matriz.consumo_prom_proyec * 0.5, 0)
-        else:
-            proyecc_saldo = max(matriz.saldo_bodega_actual - matriz.consumo_prom_proyec * 0.25, 0)
-        
-        matriz.proyecc_saldo = proyecc_saldo
-              
-        updated_matrices.append(matriz)
-
-    MatrizDispositivos.objects.bulk_update(updated_matrices, fields=['proyecc_saldo'])
-
     return render(request, 'matrices_por_unidad.html', {'unidad': unidad, 'matrices': matrices})
-
 
 def editar_matriz_dispositivo_view(request, idmatriz):
     matriz = get_object_or_404(MatrizDispositivos, pk=idmatriz)
 
     if request.method == 'POST':
         campos_esperados = [
-            'unidad_medica', 'version', 'matrix', 'item_nro', 
+            'unidad_medica', 'version', 'item_nro', 
             'nom_subcomite', 'nro_partida_pres', 'nom_partida_pres', 
             'cudim', 'cod_iess', 'cod_as400', 'nom_generico',
             'espec_tec', 'pres_unimed', 'lvl_riesgo_suger', 'lvl_aten_ia',

@@ -6,16 +6,15 @@ class MatrizDispositivos(models.Model):
     id = models.AutoField(primary_key=True)
     unidad_medica = models.ForeignKey(UnidadMedica, on_delete=models.CASCADE)
     version = models.IntegerField()
-    matrix = models.IntegerField()
     item_nro = models.IntegerField()
-    nom_subcomite = models.CharField(max_length=255)
+    nom_subcomite = models.CharField(max_length=1000)
     nro_partida_pres = models.IntegerField()
     nom_partida_pres = models.CharField(max_length=255)
     cudim = models.CharField(max_length=255)
     cod_iess = models.CharField(max_length=255)
     cod_as400 = models.IntegerField()
     nom_generico = models.CharField(max_length=255)
-    espec_tec = models.CharField(max_length=255)
+    espec_tec = models.CharField(max_length=3000)
     pres_unimed = models.CharField(max_length=255)
     lvl_riesgo_suger = models.CharField(max_length=255)
     lvl_aten_ia = models.CharField(max_length=255)
@@ -56,3 +55,14 @@ class MatrizDispositivos(models.Model):
 
     class Meta:
         db_table = 'matriz_dispositivos'
+        
+class Periodo(models.Model):
+    id = models.AutoField(primary_key=True)
+    periodicidad = models.CharField(max_length=255)
+    cantidad = models.IntegerField()
+    factor = models.IntegerField()
+    matriz_value = models.IntegerField()
+    stock_seguridad = models.IntegerField()
+
+    class Meta:
+        db_table = 'periodos'
