@@ -52,6 +52,5 @@ class MatrizDispositivos(models.Model):
     user_modify = models.CharField(max_length=255)
     modify_time = models.DateTimeField(auto_now=True)
     user_create = models.CharField(max_length=255)
-    
     class Meta:
         db_table = 'matriz_dispositivos'
