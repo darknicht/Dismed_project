@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import MatrizDispositivos
 from django.urls import reverse
 from unidadesmd.models import UnidadMedica
-from django.db.models import Max, F
+from django.db.models import Max, F, Case, Value, When
 from django.db import models
 
 
@@ -30,6 +30,7 @@ def mostrar_matriz_por_unidad(request, unidad_idudm):
             proyecc_saldo = max(matriz.saldo_bodega_actual - matriz.consumo_prom_proyec * 0.25, 0)
         
         matriz.proyecc_saldo = proyecc_saldo
+              
         updated_matrices.append(matriz)
 
     MatrizDispositivos.objects.bulk_update(updated_matrices, fields=['proyecc_saldo'])

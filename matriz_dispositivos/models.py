@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F, Case, Value, When
 from unidadesmd.models import UnidadMedica
 
 class MatrizDispositivos(models.Model):
@@ -52,5 +53,6 @@ class MatrizDispositivos(models.Model):
     user_modify = models.CharField(max_length=255)
     modify_time = models.DateTimeField(auto_now=True)
     user_create = models.CharField(max_length=255)
+
     class Meta:
         db_table = 'matriz_dispositivos'
