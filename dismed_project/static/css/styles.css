@@ -2,7 +2,7 @@
 Author: Christian Aguirre (christian.david.aguirre@gmail.com)
 styles.css (c) 2023
 Created:  2023-07-24T20:16:25.317Z
-Modified: 2023-07-27T20:45:32.241Z
+Modified: 2023-08-16T15:34:18.262Z
 */
 
 body {
@@ -50,4 +50,41 @@ body {
     top: 10px;
     right: 10px;
     cursor: pointer;
+}
+
+/*Estilos para tablas*/
+td {
+  min-width: 50px; /* ajusta este valor según tus necesidades */
+}
+
+.cell120{
+  min-width: 120px;
+}
+
+.cell200{
+  min-width: 200px;
+}
+
+.cell220{
+  min-width: 210px;
+}
+
+.cell240{
+  min-width: 260px;
+}
+
+.cell260{
+  min-width: 260px;
+}
+
+.cell310{
+  min-width: 310px;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* o el ancho que prefieras */
+  display: inline-block; /* para que funcione con elementos inline como <span> */
 }

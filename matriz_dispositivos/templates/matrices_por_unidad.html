@@ -27,12 +27,18 @@
           <th rowspan="2" style="background-color: #FFE699;" class="text-center align-middle">Disponibilidad de Dispositivo Médico</th>
           <th rowspan="2" style="background-color: #FFE699;" class="text-center align-middle">Nivel de Abastecimiento</th>
           <th rowspan="2" style="background-color: #FFE699;" class="text-center align-middle">Tipo de Procedimiento de Contratación Pública</th>
-          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">Primer Cuatrimestre<br>
-          (entre Enero - Abril)</th>
-          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">Segundo Cuatrimestre<br>
-          (entre Mayo - Agosto)</th>
-          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">Tercer Cuatrimestre<br>
-          ( entre Septiembre - Diciembre)</th>
+          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">
+            Primer Cuatrimestre<br />
+            (entre Enero - Abril)
+          </th>
+          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">
+            Segundo Cuatrimestre<br />
+            (entre Mayo - Agosto)
+          </th>
+          <th colspan="2" style="background-color: #FFF2CC;" class="text-center align-middle">
+            Tercer Cuatrimestre<br />
+            ( entre Septiembre - Diciembre)
+          </th>
           <th rowspan="2" style="background-color: #8497B0;" class="text-center align-middle">Priorización</th>
           <th rowspan="2" style="background-color: #5B9BD5;" class="text-center align-middle">Observaciones</th>
         </tr>
@@ -80,52 +86,54 @@
       <tbody>
         {% for matriz in matrices %}
           <tr>
-            <td>
-              <!-- Ícono de lápiz que abre el modal -->
+            <td class="text-center align-middle">
               <a href="#" data-mdb-toggle="modal" data-mdb-target="#Modal{{ matriz.id }}"><i class="fa fa-pencil"></i></a>
             </td>
-            <td>{{ matriz.item_nro }}</td>
-            <td>{{ matriz.nom_subcomite }}</td>
-            <td>{{ matriz.nro_partida_pres }}</td>
-            <td>{{ matriz.nom_partida_pres }}</td>
-            <td>{{ matriz.cudim }}</td>
-            <td>{{ matriz.cod_iess }}</td>
-            <td>{{ matriz.cod_as400 }}</td>
-            <td>{{ matriz.nom_generico }}</td>
-            <td>{{ matriz.espec_tec }}</td>
-            <td>{{ matriz.pres_unimed }}</td>
-            <td>{{ matriz.lvl_riesgo_suger }}</td>
-            <td>{{ matriz.lvl_aten_ia }}</td>
-            <td>{{ matriz.lvl_aten_ib }}</td>
-            <td>{{ matriz.lvl_aten_ic }}</td>
-            <td>{{ matriz.lvl_aten_ii }}</td>
-            <td>{{ matriz.lvl_aten_iii }}</td>
-            <td>{{ matriz.lvl_aten_aph }}</td>
-            <td>{{ matriz.espec_subespec }}</td>
-            <td>{{ matriz.consumo_prom_proyec }}</td>
-            <td>{{ matriz.perioci_consumo }}</td>
-            <td>{{ matriz.saldo_bodega_actual }}</td>
-            <td>{{ matriz.proyecc_saldo }}</td>
-            <td>{{ matriz.cant_pend_entre }}</td>
-            <td>{{ matriz.cod_proceso }}</td>
-            <td>{{ matriz.req_total_proyectado }}</td>
-            <td>{{ matriz.stock_seguridad }}</td>
-            <td>{{ matriz.cant_program_inicial }}</td>
-            <td>{{ matriz.cant_devol_prestam }}</td>
-            <td>{{ matriz.cant_final_required }}</td>
-            <td>{{ matriz.prec_unit_ref }}</td>
-            <td>{{ matriz.pres_ref_total }}</td>
-            <td>{{ matriz.dispo_dm }}</td>
-            <td>{{ matriz.lvl_abastec }}</td>
-            <td>{{ matriz.tip_proc_cp }}</td>
-            <td>{{ matriz.prim_cuatri_cant }}</td>
-            <td>{{ matriz.prim_cuatri_mont }}</td>
-            <td>{{ matriz.seg_cuatri_cant }}</td>
-            <td>{{ matriz.seg_cuatri_mont }}</td>
-            <td>{{ matriz.terc_cuatri_cant }}</td>
-            <td>{{ matriz.terc_cuatri_mont }}</td>
-            <td>{{ matriz.priorizacion }}</td>
-            <td>{{ matriz.observaciones }}</td>
+            <td class="text-center align-middle">{{ matriz.item_nro }}</td>
+            <td class="align-middle cell220">{{ matriz.nom_subcomite }}</td>
+            <td class="text-center align-middle">{{ matriz.nro_partida_pres }}</td>
+            <td class="align-middle cell260">{{ matriz.nom_partida_pres }}</td>
+            <td class="text-center align-middle cell200">{{ matriz.cudim }}</td>
+            <td class="text-center align-middle cell120">{{ matriz.cod_iess }}</td>
+            <td class="text-center align-middle">{{ matriz.cod_as400 }}</td>
+            <td class="align-middle cell220">{{ matriz.nom_generico }}</td>
+            <td class="especTecCell align-middle cell310">
+              <span class="text-content truncate">{{ matriz.espec_tec }}</span>
+              <a href="#" class="toggleText btn btn-info btn-rounded btn-sm">Leer más</a>
+            </td>
+            <td class="text-center align-middle">{{ matriz.pres_unimed }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_riesgo_suger }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_ia }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_ib }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_ic }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_ii }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_iii }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_aten_aph }}</td>
+            <td class="text-center align-middle">{{ matriz.espec_subespec }}</td>
+            <td class="text-center align-middle">{{ matriz.consumo_prom_proyec }}</td>
+            <td class="text-center align-middle">{{ matriz.perioci_consumo }}</td>
+            <td class="text-center align-middle">{{ matriz.saldo_bodega_actual }}</td>
+            <td class="text-center align-middle">{{ matriz.proyecc_saldo }}</td>
+            <td class="text-center align-middle">{{ matriz.cant_pend_entre }}</td>
+            <td class="text-center align-middle cell220">{{ matriz.cod_proceso }}</td>
+            <td class="text-center align-middle">{{ matriz.req_total_proyectado }}</td>
+            <td class="text-center align-middle">{{ matriz.stock_seguridad }}</td>
+            <td class="text-center align-middle">{{ matriz.cant_program_inicial }}</td>
+            <td class="text-center align-middle">{{ matriz.cant_devol_prestam }}</td>
+            <td class="text-center align-middle">{{ matriz.cant_final_required }}</td>
+            <td class="text-center align-middle">{{ matriz.prec_unit_ref }}</td>
+            <td class="text-center align-middle">{{ matriz.pres_ref_total }}</td>
+            <td class="text-center align-middle">{{ matriz.dispo_dm }}</td>
+            <td class="text-center align-middle">{{ matriz.lvl_abastec }}</td>
+            <td class="text-center align-middle cell220">{{ matriz.tip_proc_cp }}</td>
+            <td class="text-center align-middle">{{ matriz.prim_cuatri_cant }}</td>
+            <td class="text-center align-middle">{{ matriz.prim_cuatri_mont }}</td>
+            <td class="text-center align-middle">{{ matriz.seg_cuatri_cant }}</td>
+            <td class="text-center align-middle">{{ matriz.seg_cuatri_mont }}</td>
+            <td class="text-center align-middle">{{ matriz.terc_cuatri_cant }}</td>
+            <td class="text-center align-middle">{{ matriz.terc_cuatri_mont }}</td>
+            <td class="align-middle">{{ matriz.priorizacion }}</td>
+            <td class="align-middle">{{ matriz.observaciones }}</td>
           </tr>
 
           <!-- Modal para editar matriz -->
@@ -138,13 +146,12 @@
                 </div>
                 <div class="modal-body">
                   <!-- Aquí puedes añadir campos de formulario para cada uno de los atributos de la matriz -->
-                  <!--    Por ejemplo:
+                  <!--     Por ejemplo:
                   <div class="mb-3">
                     <label for="item_nro" class="form-label">Número de ítem</label>
                     <input type="text" class="form-control" id="item_nro" value="{{ matriz.item_nro }}">
                   </div>
-                     -->
-                  ...
+                      -->
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>

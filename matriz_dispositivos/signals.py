@@ -10,9 +10,9 @@ def actualizar_proyecc_saldo(sender, instance, **kwargs):
         proyecc_saldo = max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.5, 0)
     else:
         proyecc_saldo = max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.25, 0)
-    
+
     instance.proyecc_saldo = proyecc_saldo
-    
+
     # Calcula req_total_proyectado
     matriz_value_actual = Periodo.objects.get(periodicidad=instance.perioci_consumo).matriz_value
     temp_value = instance.consumo_prom_proyec * matriz_value_actual - (instance.proyecc_saldo + instance.cant_pend_entre)
@@ -22,5 +22,5 @@ def actualizar_proyecc_saldo(sender, instance, **kwargs):
         req_total_proyectado = 0
     else:
         req_total_proyectado = temp_value
-        
+
     instance.req_total_proyectado = req_total_proyectado
