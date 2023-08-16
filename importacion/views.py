@@ -4,6 +4,22 @@ import pandas as pd
 from matriz_dispositivos.models import MatrizDispositivos
 from unidadesmd.models import UnidadMedica
 from importacion.models import RegistroImportacion
+from matriz_dispositivos.signals import (
+    calcular_proyecc_saldo,
+    calcular_req_total_proyectado,
+    calcular_stock_seguridad,
+    calcular_cant_program_inicial,
+    calcular_cant_final_required,
+    calcular_pres_ref_total,
+    calcular_dispo_dm,
+    calcular_lvl_abastec,
+    calcular_prim_cuatri_cant,
+    calcular_prim_cuatri_mont,
+    calcular_seg_cuatri_cant,
+    calcular_seg_cuatri_mont,
+    calcular_terc_cuatri_cant,
+    calcular_terc_cuatri_mont
+)
 
 def validate_and_clean_data(data):
     # Limpia y valida el campo 'cant_pend_entre'
@@ -30,7 +46,13 @@ def upload_matriz(request):
 
             # Buscar la última versión en la base de datos para esa unidad médica y incrementarla en 1
             last_version = MatrizDispositivos.objects.filter(unidad_medica=unidad).order_by('-version').first()
-            new_version = last_version.version + 1 if last_version else 1
+            print("Last version:", last_version)  # Agregar esta línea
+            if last_version is not None:
+                new_version = last_version.version + 1
+            else:
+                new_version = 1
+            print("New version:", new_version)  # Agregar esta línea
+
 
             data = pd.read_excel(excel_file)
             data = validate_and_clean_data(data)
@@ -84,9 +106,25 @@ def upload_matriz(request):
                 matriz.user_modify = request.user.username
                 matriz.user_create = request.user.username
 
+                # Antes de guardar, calculamos los campos que se derivan de fórmulas
+                matriz.proyecc_saldo = calcular_proyecc_saldo(matriz)
+                matriz.req_total_proyectado = calcular_req_total_proyectado(matriz)
+                matriz.stock_seguridad = calcular_stock_seguridad(matriz)
+                matriz.cant_program_inicial = calcular_cant_program_inicial(matriz)
+                matriz.cant_final_required = calcular_cant_final_required(matriz)
+                matriz.pres_ref_total = calcular_pres_ref_total(matriz)
+                matriz.dispo_dm = calcular_dispo_dm(matriz)
+                matriz.lvl_abastec = calcular_lvl_abastec(matriz)
+                matriz.prim_cuatri_cant = calcular_prim_cuatri_cant(matriz)
+                matriz.prim_cuatri_mont = calcular_prim_cuatri_mont(matriz)
+                matriz.seg_cuatri_cant = calcular_seg_cuatri_cant(matriz)
+                matriz.seg_cuatri_mont = calcular_seg_cuatri_mont(matriz)
+                matriz.terc_cuatri_cant = calcular_terc_cuatri_cant(matriz)
+                matriz.terc_cuatri_mont = calcular_terc_cuatri_mont(matriz)
+
                 # Antes de guardar, verificamos si el registro ya existe
                 exists = MatrizDispositivos.objects.filter(
-                    cod_as400=row['cod_as400'], 
+                    cod_as400=row['cod_as400'],
                     unidad_medica=unidad,
                     version=new_version
                 ).exists()
@@ -105,6 +143,9 @@ def upload_matriz(request):
             )
             registro.save()
 
+            print(request.FILES)  # Verifica si el archivo está en request.FILES
+            print(excel_file.name)  # Verifica el nombre del archivo
+
             messages.success(request, 'Datos importados exitosamente!')
         except Exception as e:
             print(e)
@@ -112,7 +153,7 @@ def upload_matriz(request):
 
         return redirect('/importacion/upload/')
 
-    unidades_medicas = UnidadMedica.objects.all()
+    unidades_medicas = UnidadMedica.objects.all().order_by('nombre_unidad')
     return render(request, 'upload_matriz.html', {'unidades_medicas': unidades_medicas})
 
 def registros_importacion(request):

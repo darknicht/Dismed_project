@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import F, Case, Value, When
 from unidadesmd.models import UnidadMedica
 
 class MatrizDispositivos(models.Model):
@@ -56,7 +55,7 @@ class MatrizDispositivos(models.Model):
     class Meta:
         db_table = 'matriz_dispositivos'
         unique_together = ['cod_as400', 'unidad_medica', 'version']
-        
+
 class Periodo(models.Model):
     id = models.AutoField(primary_key=True)
     periodicidad = models.CharField(max_length=255)
