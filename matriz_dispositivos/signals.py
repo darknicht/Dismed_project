@@ -1,26 +1,34 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from .models import MatrizDispositivos, Periodo 
+from .models import MatrizDispositivos, Periodo
 
-@receiver(pre_save, sender=MatrizDispositivos)
-def actualizar_proyecc_saldo(sender, instance, **kwargs):
+def calcular_proyecc_saldo(instance):
     if instance.perioci_consumo == "Mensual":
-        proyecc_saldo = max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 3, 0)
+        return max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 3, 0)
     elif instance.perioci_consumo == "Semestral":
-        proyecc_saldo = max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.5, 0)
+        return max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.5, 0)
     else:
-        proyecc_saldo = max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.25, 0)
+        return max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.25, 0)
 
-    instance.proyecc_saldo = proyecc_saldo
-
-    # Calcula req_total_proyectado
+def calcular_req_total_proyectado(instance):
     matriz_value_actual = Periodo.objects.get(periodicidad=instance.perioci_consumo).matriz_value
     temp_value = instance.consumo_prom_proyec * matriz_value_actual - (instance.proyecc_saldo + instance.cant_pend_entre)
+    return 0 if temp_value < 0 else temp_value
 
-    # Implementación de la función SI
-    if temp_value < 0:
-        req_total_proyectado = 0
-    else:
-        req_total_proyectado = temp_value
+def calcular_stock_seguridad(instance):
+    periodo = Periodo.objects.get(periodicidad=instance.perioci_consumo)
+    if instance.perioci_consumo == "Mensual":
+        temp_value = instance.consumo_prom_proyec * periodo.matriz_value + instance.consumo_prom_proyec * periodo.stock_seguridad - (instance.proyecc_saldo + instance.cant_pend_entre)
+        if temp_value <= 0:
+            return 0
+        elif instance.req_total_proyectado > 0:
+            return instance.consumo_prom_proyec * periodo.stock_seguridad
+        elif instance.req_total_proyectado <= 0 and temp_value > 0:
+            return temp_value
+    return 0  # Retorno predeterminado para otros periodos
 
-    instance.req_total_proyectado = req_total_proyectado
+@receiver(pre_save, sender=MatrizDispositivos)
+def actualizar_valores(sender, instance, **kwargs):
+    instance.proyecc_saldo = calcular_proyecc_saldo(instance)
+    instance.req_total_proyectado = calcular_req_total_proyectado(instance)
+    instance.stock_seguridad = calcular_stock_seguridad(instance)

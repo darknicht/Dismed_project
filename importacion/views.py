@@ -8,6 +8,14 @@ from importacion.models import RegistroImportacion
 def validate_and_clean_data(data):
     # Limpia y valida el campo 'cant_pend_entre'
     data['cant_pend_entre'].fillna(0, inplace=True)
+
+    # Lista de campos específicos para reemplazar NaN por un guión
+    campos = ['cod_proceso', 'cudim', 'lvl_aten_ia', 'lvl_aten_ib', 'lvl_aten_ic', 'lvl_aten_ii', 'lvl_aten_iii', 'lvl_aten_aph', 'observaciones']
+
+    # Reemplaza NaN en los campos específicos por un guión
+    for campo in campos:
+        data[campo].fillna('-', inplace=True)
+
     # Aquí añadir más validaciones y limpiezas según sea necesario
     return data
 
