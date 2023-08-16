@@ -2,7 +2,7 @@
 Author: Christian Aguirre (christian.david.aguirre@gmail.com)
 styles.css (c) 2023
 Created:  2023-07-24T20:16:25.317Z
-Modified: 2023-08-16T15:34:18.262Z
+Modified: 2023-08-16T20:26:02.224Z
 */
 
 body {
@@ -87,4 +87,20 @@ td {
   text-overflow: ellipsis;
   max-width: 200px; /* o el ancho que prefieras */
   display: inline-block; /* para que funcione con elementos inline como <span> */
+}
+
+/* En tu archivo CSS o en el bloque `{% block head %}` de tu archivo Django template */
+.table-responsive {
+  overflow-x: scroll;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background-color: white !important; /* Para asegurarse de que el contenido detrás no se muestre */
+  z-index: 1; /* Para mantener la celda en la parte superior mientras se desplaza */
+}
+
+.bgstickhead{
+  background-color: #5B9BD5 !important;
 }

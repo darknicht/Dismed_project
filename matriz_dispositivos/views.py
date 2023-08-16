@@ -7,7 +7,7 @@ from django.db.models import Max
 from django.db import models
 
 def mostrar_matriz_dispositivos(request):
-    unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version'))
+    unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version')).order_by('nombre_unidad')
     return render(request, 'vista_matrices_dispositivos.html', {'unidades_medicas': unidades_medicas})
 
 def mostrar_matriz_dispositivo(request, idmatriz):
