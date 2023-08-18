@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.db import connection
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required
 def buscador_view(request):
     if request.method == 'POST':
         # Obtener los datos del formulario de búsqueda y realizar la búsqueda

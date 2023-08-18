@@ -1,8 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required
 def inicio_view(request):
-    contenido = obtener_inicio()
-    return render(request, 'inicio.html', {'contenido': contenido})
+    if request.user.is_authenticated:
+        contenido = obtener_inicio()
+        return render(request, 'inicio.html', {'contenido': contenido})
+    else:
+        return redirect('login') # Asegúrate de que 'login' sea el nombre correcto de la ruta de login en tu archivo urls.py
 
 def obtener_inicio():
     # Lógica para obtener los datos de la página de inicio

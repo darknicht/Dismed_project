@@ -20,7 +20,11 @@ from matriz_dispositivos.signals import (
     calcular_terc_cuatri_cant,
     calcular_terc_cuatri_mont
 )
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required
 def validate_and_clean_data(data):
     # Limpia y valida el campo 'cant_pend_entre'
     data['cant_pend_entre'].fillna(0, inplace=True)

@@ -2,9 +2,12 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', include('inicio.urls')),
+    path('', auth_views.LoginView.as_view(), name='login'), # Redirige la URL raíz a la vista de inicio de sesión
+    path('auth/', include('autenticacion.urls')),
+    path('inicio/', include('inicio.urls')),
     path('buscador/', include('buscador.urls')),
     path('departamentos/', include('departamentos.urls')),
     path('unidadesmd/', include('unidadesmd.urls')),

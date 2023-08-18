@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import MatrizMedicamentos
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required
 def mostrar_matriz_medicamentos(request):
     matrices = MatrizMedicamentos.objects.all()
     return render(request, 'vista_matrices_medicamentos.html', {'matrices': matrices})

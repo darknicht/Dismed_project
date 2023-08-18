@@ -5,6 +5,11 @@ from django.urls import reverse
 from unidadesmd.models import UnidadMedica
 from django.db.models import Max
 from django.db import models
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+
+@never_cache
+@login_required
 
 def mostrar_matriz_dispositivos(request):
     unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version')).order_by('nombre_unidad')

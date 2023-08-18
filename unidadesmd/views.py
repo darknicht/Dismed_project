@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import UnidadMedica
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@never_cache
+@login_required
 def mostrar_unidadesmd(request):
     unidadesmd = UnidadMedica.objects.all()
     return render(request, 'unidadesmd.html', {'unidadesmd': unidadesmd})
