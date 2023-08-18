@@ -6,6 +6,8 @@ from django.views.decorators.cache import never_cache
 import pandas as pd
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+@never_cache
+@login_required
 def validate_and_clean_data(data):
     # Lista de campos específicos para reemplazar NaN por un guión
     campos = ['cudim', 'lvl_aten_ia', 'lvl_aten_ib', 'lvl_aten_ic', 'lvl_aten_ii', 'lvl_aten_iii', 'lvl_aten_aph']
@@ -80,8 +82,7 @@ def import_excel(request):
                     for col_name, value in row.iteritems():
                         try:
                             # Intenta procesar cada valor de la columna
-                            # Puedes adaptar esta lógica según tu necesidad
-                            value = str(value) # o cualquier otro procesamiento
+                            value = str(value)
                         except Exception as col_error:
                             print(f"Error en la columna '{col_name}' con valor '{value}'. Error: {str(col_error)}")
                             break
