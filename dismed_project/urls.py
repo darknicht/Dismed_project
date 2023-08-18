@@ -12,6 +12,7 @@ urlpatterns = [
     path('departamentos/', include('departamentos.urls')),
     path('unidadesmd/', include('unidadesmd.urls')),
     path('matriz_dispositivos/', include('matriz_dispositivos.urls')),
+    path('listado_dispositivos_medicos/', include('listado_dispositivos_medicos.urls')),
     path('matriz_medicamentos/', include('matriz_medicamentos.urls')),
     path('importacion/', include('importacion.urls')),
     path('admin/', admin.site.urls),

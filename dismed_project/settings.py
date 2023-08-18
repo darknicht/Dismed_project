@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'departamentos',
     'unidadesmd',
     'matriz_dispositivos',
+    'listado_dispositivos_medicos',
     'matriz_medicamentos',
     'importacion',
 ]
