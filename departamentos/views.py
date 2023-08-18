@@ -11,10 +11,14 @@ def mostrar_departamentos(request):
     departamentos = Departamentos.objects.all()  # Obtener todos los departamentos del modelo
     return render(request, 'departamentos.html', {'departamentos': departamentos})
 
+@never_cache
+@login_required
 def mostrar_departamento(request, iddepto):
     departamento = get_object_or_404(Departamentos, iddepto=iddepto)
     return render(request, 'departamento.html', {'departamento': departamento})
 
+@never_cache
+@login_required
 def editar_departamento_view(request, iddepto):
     departamento = get_object_or_404(Departamentos, iddepto=iddepto)
 

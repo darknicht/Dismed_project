@@ -39,6 +39,8 @@ def validate_and_clean_data(data):
     # Aquí añadir más validaciones y limpiezas según sea necesario
     return data
 
+@never_cache
+@login_required
 def upload_matriz(request):
     if request.method == 'POST':
         messages.info(request, "Archivo recibido")
@@ -160,6 +162,8 @@ def upload_matriz(request):
     unidades_medicas = UnidadMedica.objects.all().order_by('nombre_unidad')
     return render(request, 'upload_matriz.html', {'unidades_medicas': unidades_medicas})
 
+@never_cache
+@login_required
 def registros_importacion(request):
     registros = RegistroImportacion.objects.all().order_by('-fecha_importacion')  # Obtener registros ordenados por fecha descendente
     return render(request, 'registro_importaciones.html', {'registros': registros})

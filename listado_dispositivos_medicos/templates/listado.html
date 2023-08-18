@@ -2,6 +2,32 @@
 
 {% block content %}
   <h1>Listado de Dispositivos Médicos</h1>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination pg-blue">
+      {% if dispositivos.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="Primero"><span aria-hidden="true">&laquo;&laquo;</span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.previous_page_number }}" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+      {% endif %}
+
+      <li class="page-item disabled">
+        <span class="page-link">Página {{ dispositivos.number }} de {{ dispositivos.paginator.num_pages }}</span>
+      </li>
+
+      {% if dispositivos.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.next_page_number }}" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.paginator.num_pages }}" aria-label="Último"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -59,4 +85,29 @@
       </tbody>
     </table>
   </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination pg-blue">
+      {% if dispositivos.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="Primero"><span aria-hidden="true">&laquo;&laquo;</span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.previous_page_number }}" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+      {% endif %}
+
+      <li class="page-item disabled">
+        <span class="page-link">Página {{ dispositivos.number }} de {{ dispositivos.paginator.num_pages }}</span>
+      </li>
+
+      {% if dispositivos.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.next_page_number }}" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ dispositivos.paginator.num_pages }}" aria-label="Último"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endblock %}

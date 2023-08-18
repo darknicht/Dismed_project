@@ -10,21 +10,26 @@ from django.views.decorators.cache import never_cache
 
 @never_cache
 @login_required
-
 def mostrar_matriz_dispositivos(request):
     unidades_medicas = UnidadMedica.objects.annotate(ultima_version=models.Max('matrizdispositivos__version')).order_by('nombre_unidad')
     return render(request, 'vista_matrices_dispositivos.html', {'unidades_medicas': unidades_medicas})
 
+@never_cache
+@login_required
 def mostrar_matriz_dispositivo(request, idmatriz):
     matriz = get_object_or_404(MatrizDispositivos, pk=idmatriz)
     return render(request, 'matriz_dispositivo.html', {'matriz': matriz})
 
+@never_cache
+@login_required
 def mostrar_matriz_por_unidad(request, unidad_idudm):
     unidad = get_object_or_404(UnidadMedica, pk=unidad_idudm)
     ultima_version = MatrizDispositivos.objects.filter(unidad_medica=unidad).aggregate(models.Max('version'))['version__max']
     matrices = MatrizDispositivos.objects.filter(unidad_medica=unidad, version=ultima_version).order_by('item_nro')
     return render(request, 'matrices_por_unidad.html', {'unidad': unidad, 'matrices': matrices})
 
+@never_cache
+@login_required
 def editar_matriz_dispositivo_view(request, idmatriz):
     matriz = get_object_or_404(MatrizDispositivos, pk=idmatriz)
 

@@ -11,10 +11,14 @@ def mostrar_unidadesmd(request):
     unidadesmd = UnidadMedica.objects.all()
     return render(request, 'unidadesmd.html', {'unidadesmd': unidadesmd})
 
+@never_cache
+@login_required
 def mostrar_unidadmd(request, idudm):
     unidadmd = get_object_or_404(UnidadMedica, pk=idudm)
     return render(request, 'unidadmd.html', {'unidadmd': unidadmd})
 
+@never_cache
+@login_required
 def editar_unidadmd_view(request, idudm):
     unidadmd = get_object_or_404(UnidadMedica, pk=idudm)
 

@@ -13,6 +13,9 @@ def buscador_view(request):
         return render(request, 'buscador.html', {'resultados': resultados})
     else:
         return render(request, 'buscador.html')
+
+@never_cache
+@login_required
 def buscar(query):
     # Lógica para realizar la búsqueda en la base de datos
     with connection.cursor() as cursor:

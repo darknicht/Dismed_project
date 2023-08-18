@@ -13,12 +13,12 @@ class ListadoDispositivosMedicos(models.Model):
     espec_tec = models.CharField(max_length=6000)
     pres_unimed = models.CharField(max_length=255)
     lvl_riesgo_suger = models.CharField(max_length=255)
-    lvl_aten_IA = models.CharField(max_length=255)
-    lvl_aten_IB = models.CharField(max_length=255)
-    lvl_aten_IC = models.CharField(max_length=255)
-    lvl_aten_II = models.CharField(max_length=255)
-    lvl_aten_III = models.CharField(max_length=255)
-    lvl_aten_APH = models.CharField(max_length=255)
+    lvl_aten_ia = models.CharField(max_length=255)
+    lvl_aten_ib = models.CharField(max_length=255)
+    lvl_aten_ic = models.CharField(max_length=255)
+    lvl_aten_ii = models.CharField(max_length=255)
+    lvl_aten_iii = models.CharField(max_length=255)
+    lvl_aten_aph = models.CharField(max_length=255)
     espec_subespec = models.CharField(max_length=255)
 
     class Meta:
