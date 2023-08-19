@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'autenticacion',
     'two_factor',
+    'user_profiles',
     'buscador',
     'inicio',
     'departamentos',
