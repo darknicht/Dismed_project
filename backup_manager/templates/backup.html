@@ -9,9 +9,26 @@
 </head>
 <body>
     <h1>Backup Manager</h1>
-    <form action="{% url 'crear_backup' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Crear Backup</button>
-    </form>
+<!-- Formulario para crear un nuevo backup -->
+<form action="{% url 'crear_backup' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Crear Backup">
+  </form>
+  
+  <!-- Listado de backups -->
+  <h2>Listado de Backups</h2>
+  <ul>
+    {% for backup_file in backup_files %}
+      <li>
+        {{ backup_file }}
+        <form action="{% url 'import_backup' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="backup_file" value="{{ backup_file }}">
+          <input type="submit" value="Restaurar Backup">
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+  
 </body>
 </html>

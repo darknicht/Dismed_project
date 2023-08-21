@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 @user_passes_test(lambda u: u.is_superuser)
 def crear_backup(request):
+    backup_folder_path = os.path.join(settings.BASE_DIR, 'backup_manager/backups')
+    backup_files = [f for f in os.listdir(backup_folder_path) if f.endswith('.snmd1')]
+
     if request.method == 'POST':
         # Cargar variables de entorno desde el archivo .env en dismed_project
         env_path = os.path.join(settings.BASE_DIR, './dismed_project/.env')
@@ -25,7 +28,6 @@ def crear_backup(request):
         if db_user is None or db_name is None or db_password is None:
             return HttpResponse('Error al cargar las variables de entorno.', status=500)
         
-        backup_folder_path = os.path.join(settings.BASE_DIR, 'backup_manager/backups')
         os.makedirs(backup_folder_path, exist_ok=True)
         # Generar un nombre de archivo basado en la fecha y hora actual
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -45,7 +47,19 @@ def crear_backup(request):
             except UnicodeDecodeError:
                 error_message = "Error al decodificar el mensaje de error."
             return HttpResponse(f'Error al crear el backup: {error_message}', status=500)
+        
     else:
-        # Renderizar la plantilla HTML
-        return render(request, 'backup.html')
+        # Renderizar la plantilla HTML con la lista de backups
+        return render(request, 'backup.html', {'backup_files': backup_files})
 
+@user_passes_test(lambda u: u.is_superuser)
+def import_backup(request):
+    backup_folder_path = os.path.join(settings.BASE_DIR, 'backup_manager/backups')
+
+    if request.method == 'POST':
+        backup_file = request.POST['backup_file']
+        backup_path = os.path.join(backup_folder_path, backup_file)
+        # Resto del código para importar el backup
+
+    else:
+        return render(request, 'import_backup.html', {'backup_files': backup_files})

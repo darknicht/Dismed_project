@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Manager</title>
+</head>
+<body>
+<form action="{% url 'import_backup' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="backup_file">Selecciona un archivo de backup:</label>
+    <input type="file" name="backup_file" required>
+    <input type="submit" value="Importar Backup">
+  </form>
+
+</body>
+</html>
