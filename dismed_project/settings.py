@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'listado_dispositivos_medicos',
     'matriz_medicamentos',
     'importacion',
+    'backup_manager',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,17 @@
+<!-- backup_manager/templates/backup_manager/backup.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Manager</title>
+</head>
+<body>
+    <h1>Backup Manager</h1>
+    <form action="{% url 'crear_backup' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Crear Backup</button>
+    </form>
+</body>
+</html>
