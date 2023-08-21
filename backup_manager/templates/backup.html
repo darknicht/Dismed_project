@@ -1,34 +1,48 @@
 <!-- backup_manager/templates/backup_manager/backup.html -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backup Manager</title>
-</head>
-<body>
-    <h1>Backup Manager</h1>
+{% extends 'base.html' %}
+
+{% block title %}Backup Manager{% endblock %}
+
+{% block content %}
 <!-- Formulario para crear un nuevo backup -->
 <form action="{% url 'crear_backup' %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Crear Backup">
-  </form>
-  
-  <!-- Listado de backups -->
-  <h2>Listado de Backups</h2>
-  <ul>
-    {% for backup_file in backup_files %}
-      <li>
-        {{ backup_file }}
-        <form action="{% url 'import_backup' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="backup_file" value="{{ backup_file }}">
-          <input type="submit" value="Restaurar Backup">
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-  
-</body>
-</html>
+</form>
+
+<!-- Mostrar mensajes de éxito -->
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Listado de backups en una tabla -->
+<h2>Listado de Backups</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre del Backup</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for backup_file in backup_files %}
+            <tr>
+                <td>{{ backup_file }}</td>
+                <td>
+                    <form action="{% url 'import_backup' backup_file|slice:":-6" %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Restaurar Backup</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
