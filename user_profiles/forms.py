@@ -5,19 +5,14 @@ from django.contrib.auth.models import User, Group
 
 class SelectUserForm(forms.Form):
     selected_user_id = forms.ModelChoiceField(
-        queryset=User.objects.filter(groups__name__in=['Operador 1', 'Operador 2', 'Operador 3']).order_by('username'),
+        queryset=User.objects.exclude(groups__name__in=['Administrador', 'SuperAdmin']).order_by('username'),
         required=True,
         label='Seleccionar usuario',
     )
 
 class AssignUnitForm(forms.Form):
-    user = forms.ModelChoiceField(
-        queryset=User.objects.filter(groups__name__in=['Operador 1', 'Operador 2', 'Operador 3']).order_by('username'),
-        required=True,
-        label='Usuario',
-    )
     group = forms.ModelChoiceField(
-        queryset=Group.objects.filter(name__in=['Administrador', 'SuperAdmin', 'Operador 1', 'Operador 2', 'Operador 3']).order_by('name'),
+        queryset=Group.objects.exclude(name__in=['Administrador', 'SuperAdmin']).order_by('name'),
         required=True,
         label='Grupo',
     )

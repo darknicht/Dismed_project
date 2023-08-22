@@ -54,7 +54,12 @@ INSTALLED_APPS = [
     'matriz_medicamentos',
     'importacion',
     'backup_manager',
+    'widget_tweaks',
+    'crispy_forms',
 ]
+
+# Configuración de django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4' # Asegúrate de utilizar la versión correcta de Bootstrap que esté en línea con MDB
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

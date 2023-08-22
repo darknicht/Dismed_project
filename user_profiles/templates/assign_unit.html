@@ -8,14 +8,6 @@
     <button type="submit" class="btn btn-secondary">Seleccionar</button>
 </form>
 
-{% if selected_user %}
-<form action="{% url 'assign_unit' %}" method="POST">
-    {% csrf_token %}
-    {{ assign_unit_form }}
-    <button type="submit" class="btn btn-primary">Asignar</button>
-</form>
-{% endif %}
-
 {% if current_group or current_unit %}
 <div class="current-info">
     <h3>Información Actual</h3>
@@ -26,6 +18,14 @@
     <p><strong>Unidad Médica:</strong> {{ current_unit.nombre_unidad }}</p>
     {% endif %}
 </div>
+{% endif %}
+
+{% if assign_unit_form %}
+<form action="{% url 'assign_unit' %}" method="POST">
+    {% csrf_token %}
+    {{ assign_unit_form }}
+    <button type="submit" class="btn btn-primary" name="assign_unit">Asignar</button>
+</form>
 {% endif %}
 
 <!-- Mostrar mensajes de éxito -->

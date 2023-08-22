@@ -22,5 +22,8 @@ class UnidadMedica(models.Model):
     zona = models.CharField(max_length=255)
     distrito = models.CharField(max_length=255)
     
+    def __str__(self):
+        return self.nombre_unidad
+    
     class Meta:
         db_table = 'unidadesmd'
