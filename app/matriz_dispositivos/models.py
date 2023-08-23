@@ -1,6 +1,7 @@
 from django.db import models
 from unidadesmd.models import UnidadMedica
 
+
 class MatrizDispositivos(models.Model):
     id = models.AutoField(primary_key=True)
     unidad_medica = models.ForeignKey(UnidadMedica, on_delete=models.CASCADE)
@@ -53,8 +54,9 @@ class MatrizDispositivos(models.Model):
     user_create = models.CharField(max_length=255)
 
     class Meta:
-        db_table = 'matriz_dispositivos'
-        unique_together = ['cod_as400', 'unidad_medica', 'version']
+        db_table = "matriz_dispositivos"
+        unique_together = ["cod_as400", "unidad_medica", "version"]
+
 
 class Periodo(models.Model):
     id = models.AutoField(primary_key=True)
@@ -65,4 +67,4 @@ class Periodo(models.Model):
     stock_seguridad = models.IntegerField()
 
     class Meta:
-        db_table = 'periodos'
+        db_table = "periodos"
