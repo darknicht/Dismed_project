@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 import pandas as pd
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .utils import get_nivel_atencion_queries
 
 
 @never_cache
@@ -32,9 +33,11 @@ def validate_and_clean_data(data):
 @never_cache
 @login_required
 def listado_dispositivos_medicos_view(request):
-    dispositivos_list = ListadoDispositivosMedicos.objects.all().order_by(
-        "item_nro"
-    )  # Ordenar por item_nro
+    nivel_atencion_queries = get_nivel_atencion_queries(request.user)
+    dispositivos_list = ListadoDispositivosMedicos.objects.filter(
+        nivel_atencion_queries
+    ).order_by("item_nro")
+
     paginator = Paginator(dispositivos_list, 25)  # Muestra 25 dispositivos por página
 
     page_number = request.GET.get("page")

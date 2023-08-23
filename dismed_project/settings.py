@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "matriz_medicamentos",
     "importacion",
     "backup_manager",
+    "priorizacion",
 ]
 
 # Configuración de django-crispy-forms

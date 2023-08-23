@@ -17,6 +17,7 @@ urlpatterns = [
     path("listado_dispositivos_medicos/", include("listado_dispositivos_medicos.urls")),
     path("matriz_medicamentos/", include("matriz_medicamentos.urls")),
     path("importacion/", include("importacion.urls")),
+    path("priorizacion/", include("priorizacion.urls")),
     path("backup_manager/", include("backup_manager.urls")),
     path("user_profiles/", include("user_profiles.urls")),
     path("admin/", admin.site.urls),
