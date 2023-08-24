@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib import messages
 from .models import Preseleccion, PrePriorizacion, Priorizacion
 from listado_dispositivos_medicos.models import ListadoDispositivosMedicos
 from listado_dispositivos_medicos.utils import get_nivel_atencion_queries
@@ -10,6 +11,10 @@ from listado_dispositivos_medicos.utils import get_nivel_atencion_queries
 def preseleccion_view(request):
     if request.method == "POST":
         seleccionados_ids = request.POST.getlist("seleccionados")
+        if len(seleccionados_ids) < 5:
+            messages.error(request, 'Por favor, selecciona al menos 5 items.')
+            return redirect("preseleccion_view")
+
         dispositivos_seleccionados = ListadoDispositivosMedicos.objects.filter(
             id__in=seleccionados_ids
         )
@@ -24,16 +29,13 @@ def preseleccion_view(request):
         nivel_atencion_queries = get_nivel_atencion_queries(request.user)
         dispositivos_list = ListadoDispositivosMedicos.objects.filter(
             nivel_atencion_queries
-        ).order_by(
-            "id"
-        )  # Ordenar por el campo nom_generico
+        ).order_by('id')
 
         paginator = Paginator(dispositivos_list, 20)  # 25 dispositivos por página
         page_number = request.GET.get("page")
         dispositivos = paginator.get_page(page_number)
 
         return render(request, "preseleccion.html", {"dispositivos": dispositivos})
-
 
 @login_required
 def prepriorizacion_view(request, preseleccion_id):

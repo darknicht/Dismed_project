@@ -2,6 +2,14 @@
 
 {% block content %}
   <h1>Preselección de Dispositivos Médicos</h1>
+  {% if messages %}
+  <div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+{% endif %}
+
   <form method="post">
     {% csrf_token %}
     <nav aria-label="Page navigation example">
