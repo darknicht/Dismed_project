@@ -36,14 +36,13 @@
       <table class="table">
         <thead>
             <tr>
-                <th colspan="9"></th>
+                <th colspan="8"></th>
                 <th colspan="6" style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">NIVEL DE ATENCIÓN</th>
             </tr>
             <tr>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Seleccionar</th>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">N° Item</th>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Código BES</th>
-                <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Código IESS</th>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Código AS400</th>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Nombre Genérico</th>
                 <th style="background-color: #5B9BD5; color: #fff;" class="text-center align-middle">Especificación Técnica</th>
@@ -60,13 +59,12 @@
         <tbody>
           {% for dispositivo in dispositivos %}
             <tr>
-              <td class="text-center align-middle"><input type="checkbox" name="seleccionados" value="{{ dispositivo.id }}"></td>
+              <td class="text-center align-middle cell120"><input type="checkbox" name="seleccionados" value="{{ dispositivo.id }}"></td>
               <td class="text-center align-middle">{{ dispositivo.item_nro }}</td>
-              <td class="text-center align-middle cell200">{{ dispositivo.cudim }}</td>
-              <td class="text-center align-middle cell120">{{ dispositivo.cod_iess }}</td>
+              <td class="text-center align-middle cell145">{{ dispositivo.cudim }}</td>
               <td class="text-center align-middle">{{ dispositivo.cod_as400 }}</td>
               <td class="align-middle cell220">{{ dispositivo.nom_generico }}</td>
-              <td class="especTecCell align-middle cell310">
+              <td class="especTecCell align-middle cell270">
                 <span class="text-content truncate">{{ dispositivo.espec_tec }}</span>
                 <a href="#" class="toggleText btn btn-info btn-rounded btn-sm">Leer más</a>
               </td>

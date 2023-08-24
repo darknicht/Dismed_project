@@ -24,9 +24,11 @@ def preseleccion_view(request):
         nivel_atencion_queries = get_nivel_atencion_queries(request.user)
         dispositivos_list = ListadoDispositivosMedicos.objects.filter(
             nivel_atencion_queries
-        )
+        ).order_by(
+            "id"
+        )  # Ordenar por el campo nom_generico
 
-        paginator = Paginator(dispositivos_list, 25)  # 25 dispositivos por página
+        paginator = Paginator(dispositivos_list, 20)  # 25 dispositivos por página
         page_number = request.GET.get("page")
         dispositivos = paginator.get_page(page_number)
 
