@@ -1,18 +1,87 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from .models import MatrizDispositivos, Periodo
+from decimal import Decimal
+import re
+
+
+def parse_usd(value, decimals=2):
+    pattern = r"^USD\s?\d{1,3}(,\d{3})*(\.\d{2})?$"
+    if re.match(pattern, value) is not None:
+        # Remove the currency symbol and replace the comma with nothing
+        value = value.replace("USD", "").replace(",", "")
+        return Decimal(value).quantize(Decimal(f"0.{decimals * '0'}"))
+    else:
+        return Decimal(0)
+
+
+# Cálculos para valores de moneda
 
 
 # Calcula Proyección de Saldo (PS)
 def calcular_proyecc_saldo(instance):
+    saldo_bodega_actual = parse_usd(instance.saldo_bodega_actual)
+    consumo_prom_proyec = parse_usd(instance.consumo_prom_proyec)
+
     if instance.perioci_consumo == "Mensual":
-        return max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 3, 0)
+        return max(
+            saldo_bodega_actual - consumo_prom_proyec * Decimal("3"), Decimal("0")
+        )
     elif instance.perioci_consumo == "Semestral":
-        return max(instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.5, 0)
+        return max(
+            saldo_bodega_actual - consumo_prom_proyec * Decimal("0.5"), Decimal("0")
+        )
     else:
         return max(
-            instance.saldo_bodega_actual - instance.consumo_prom_proyec * 0.25, 0
+            saldo_bodega_actual - consumo_prom_proyec * Decimal("0.25"), Decimal("0")
         )
+
+
+# Calcula Precio de Referencia Total (PRT)
+def calcular_pres_ref_total(instance):
+    cant_final_required = parse_usd(instance.cant_final_required)
+    prec_unit_ref = parse_usd(instance.prec_unit_ref)
+    return (cant_final_required * prec_unit_ref).quantize(Decimal("0.00"))
+
+
+# Calcula Monto Primera Cuatrimestre (PCM)
+def calcular_prim_cuatri_mont(instance):
+    dispo_dm = parse_usd(instance.dispo_dm)
+    seg_cuatri_mont = parse_usd(instance.seg_cuatri_mont)
+    pres_ref_total = parse_usd(instance.pres_ref_total)
+    if dispo_dm <= 4 and seg_cuatri_mont <= 0:
+        return pres_ref_total
+    else:
+        return Decimal(0)
+
+
+# Calcula Monto Segundo Cuatrimestre (SCM)
+def calcular_seg_cuatri_mont(instance):
+    dispo_dm = parse_usd(instance.dispo_dm)
+    cant_program_inicial = parse_usd(instance.cant_program_inicial)
+    cant_devol_prestam = parse_usd(instance.cant_devol_prestam)
+    cant_final_required = parse_usd(instance.cant_final_required)
+    pres_ref_total = parse_usd(instance.pres_ref_total)
+    if 4 < dispo_dm <= 8 or (
+        cant_program_inicial == 0 and cant_devol_prestam > 0 and cant_final_required > 0
+    ):
+        return pres_ref_total
+    else:
+        return Decimal(0)
+
+
+# Calcula Monto Tercer Cuatrimestre (TCM)
+def calcular_terc_cuatri_mont(instance):
+    dispo_dm = parse_usd(instance.dispo_dm)
+    seg_cuatri_mont = parse_usd(instance.seg_cuatri_mont)
+    pres_ref_total = parse_usd(instance.pres_ref_total)
+    if dispo_dm > 8 and dispo_dm <= 15 and seg_cuatri_mont <= 0:
+        return pres_ref_total
+    else:
+        return Decimal(0)
+
+
+# Cálculos de otros campos
 
 
 # Calcula Requerimiento Total Proyectado (RTP)
@@ -68,11 +137,6 @@ def calcular_cant_final_required(instance):
     return 0 if temp_value < 0 else temp_value
 
 
-# Calcula Precio de Referencia Total (PRT)
-def calcular_pres_ref_total(instance):
-    return instance.cant_final_required * instance.prec_unit_ref
-
-
 # Calcula Disponibilidad del Dispositivo Médico (DDM)
 def calcular_dispo_dm(instance):
     if instance.consumo_prom_proyec == 0:
@@ -121,14 +185,6 @@ def calcular_prim_cuatri_cant(instance):
         return 0
 
 
-# Calcula Monto Primera Cuatrimestre (PCM)
-def calcular_prim_cuatri_mont(instance):
-    if instance.dispo_dm <= 4 and instance.seg_cuatri_mont <= 0:
-        return instance.pres_ref_total
-    else:
-        return 0
-
-
 # Calcula Cantidad Segunda Cuatrimestre (SCC)
 def calcular_seg_cuatri_cant(instance):
     cond1 = 4 < instance.dispo_dm <= 8
@@ -140,24 +196,6 @@ def calcular_seg_cuatri_cant(instance):
 
     if cond1 or cond2:
         return instance.cant_final_required
-    else:
-        return 0
-
-
-# Calcula Monto Segundo Cuatrimestre (SCM)
-def calcular_seg_cuatri_mont(instance):
-    # La primera parte (O) verifica si alguna de las condiciones dentro del paréntesis se cumple.
-    # En este caso, la primera condición es Y(AG14>4;AG14<=8) y la segunda condición es Y(AB14=0;AC14>0;AD14>0)
-    condicion_1 = 4 < instance.dispo_dm <= 8
-    condicion_2 = (
-        instance.cant_program_inicial == 0
-        and instance.cant_devol_prestam > 0
-        and instance.cant_final_required > 0
-    )
-
-    # Si alguna de las dos condiciones anteriores se cumple, se devuelve AF14, de lo contrario, se devuelve 0.
-    if condicion_1 or condicion_2:
-        return instance.pres_ref_total
     else:
         return 0
 
@@ -174,19 +212,6 @@ def calcular_terc_cuatri_cant(instance):
     # Si la condición anterior se cumple, se devuelve AD14, de lo contrario, se devuelve 0.
     if condicion:
         return instance.cant_final_required
-    else:
-        return 0
-
-
-# Calcula Monto Tercer Cuatrimestre (TCM)
-def calcular_terc_cuatri_mont(instance):
-    condicion = (
-        (instance.dispo_dm > 8)
-        and (instance.dispo_dm <= 15)
-        and (instance.seg_cuatri_mont <= 0)
-    )
-    if condicion:
-        return instance.pres_ref_total
     else:
         return 0
 
