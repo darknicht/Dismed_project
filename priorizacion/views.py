@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .models import Preseleccion, PrePriorizacion, Priorizacion
+from .models import Preseleccion, Estimacion, Priorizacion
 from listado_dispositivos_medicos.models import ListadoDispositivosMedicos
 from listado_dispositivos_medicos.utils import get_nivel_atencion_queries
 from matriz_dispositivos.signals import actualizar_valores
@@ -37,7 +37,7 @@ def preseleccion_view(request):
         preseleccion.save()
         preseleccion.dispositivos.add(*dispositivos_seleccionados)
 
-        return redirect("prepriorizacion_view", preseleccion_id=preseleccion.id)
+        return redirect("estimacion_view", preseleccion_id=preseleccion.id)
 
     else:
         nivel_atencion_queries = get_nivel_atencion_queries(request.user)
@@ -53,7 +53,7 @@ def preseleccion_view(request):
 
 
 @login_required
-def prepriorizacion_view(request, preseleccion_id):
+def estimacion_view(request, preseleccion_id):
     preseleccion = Preseleccion.objects.get(pk=preseleccion_id)
     dispositivos_preseleccionados = preseleccion.dispositivos.all()
 
@@ -87,39 +87,39 @@ def prepriorizacion_view(request, preseleccion_id):
                     request,
                     f"Formato USD inválido para el dispositivo {dispositivo.id}. Asegúrate de usar el número correcto de decimales y el símbolo USD.",
                 )
-                return redirect("prepriorizacion_view", preseleccion_id=preseleccion_id)
+                return redirect("estimacion_view", preseleccion_id=preseleccion_id)
 
             cod_proceso = request.POST.get(f"cod_proceso_{dispositivo.id}")
             tip_proc_cp = request.POST.get(f"tip_proc_cp_{dispositivo.id}")
             priorizacion = request.POST.get(f"priorizacion_{dispositivo.id}")
             observaciones = request.POST.get(f"observaciones_{dispositivo.id}")
 
-            # Crear o actualizar el registro de PrePriorizacion
-            pre_priorizacion, created = PrePriorizacion.objects.get_or_create(
+            # Crear o actualizar el registro de estimacion
+            pre_estimacion, created = Estimacion.objects.get_or_create(
                 preseleccion=preseleccion,
                 dispositivo=dispositivo,
             )
-            pre_priorizacion.perioci_consumo = perioci_consumo
-            pre_priorizacion.consumo_prom_proyec = consumo_prom_proyec
-            pre_priorizacion.cant_pend_entre = cant_pend_entre
-            pre_priorizacion.cod_proceso = cod_proceso
-            pre_priorizacion.saldo_bodega_actual = saldo_bodega_actual
-            pre_priorizacion.prec_unit_ref = prec_unit_ref
-            pre_priorizacion.tip_proc_cp = tip_proc_cp
-            pre_priorizacion.priorizacion = priorizacion
-            pre_priorizacion.observaciones = observaciones
+            pre_estimacion.perioci_consumo = perioci_consumo
+            pre_estimacion.consumo_prom_proyec = consumo_prom_proyec
+            pre_estimacion.cant_pend_entre = cant_pend_entre
+            pre_estimacion.cod_proceso = cod_proceso
+            pre_estimacion.saldo_bodega_actual = saldo_bodega_actual
+            pre_estimacion.prec_unit_ref = prec_unit_ref
+            pre_estimacion.tip_proc_cp = tip_proc_cp
+            pre_estimacion.priorizacion = priorizacion
+            pre_estimacion.observaciones = observaciones
 
             # Llamar a la función que realiza los cálculos
-            actualizar_valores(sender=PrePriorizacion, instance=pre_priorizacion)
+            actualizar_valores(sender=Estimacion, instance=pre_estimacion)
 
-            pre_priorizacion.save()
+            pre_estimacion.save()
 
         # Redireccionar a la siguiente etapa (por ejemplo, Priorización)
         return redirect("priorizacion_view", preseleccion_id=preseleccion.id)
 
     return render(
         request,
-        "prepriorizacion.html",
+        "estimacion.html",
         {
             "dispositivos": dispositivos_preseleccionados,
             "periodos": periodos,
@@ -128,11 +128,11 @@ def prepriorizacion_view(request, preseleccion_id):
 
 
 @login_required
-def priorizacion_view(request, pre_priorizacion_id):
-    pre_priorizacion = PrePriorizacion.objects.get(pk=pre_priorizacion_id)
+def priorizacion_view(request, pre_estimacion_id):
+    pre_estimacion = Estimacion.objects.get(pk=pre_estimacion_id)
     # Resto de la lógica para manejar la priorización
 
-    return render(request, "priorizacion.html", {"pre_priorizacion": pre_priorizacion})
+    return render(request, "priorizacion.html", {"pre_estimacion": pre_estimacion})
 
 
 # Puedes continuar agregando las vistas necesarias para tu flujo de trabajo

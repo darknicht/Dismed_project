@@ -29,7 +29,7 @@ class Preseleccion(models.Model):
         return f"Preselección de {self.usuario.username}"
 
 
-class PrePriorizacion(models.Model):
+class Estimacion(models.Model):
     preseleccion = models.ForeignKey(Preseleccion, on_delete=models.CASCADE)
     dispositivo = models.ForeignKey(
         ListadoDispositivosMedicos, on_delete=models.CASCADE
@@ -55,12 +55,12 @@ class PrePriorizacion(models.Model):
     )
 
     def __str__(self):
-        return f"Pre-Priorización de {self.dispositivo.nombre}"
+        return f"Estimación de {self.dispositivo.nombre}"
 
 
 class Priorizacion(models.Model):
     pre_priorizacion = models.ForeignKey(
-        PrePriorizacion, on_delete=models.CASCADE, related_name="priorizaciones"
+        Estimacion, on_delete=models.CASCADE, related_name="priorizaciones"
     )
     matriz_dispositivo = models.ForeignKey(
         MatrizDispositivos, on_delete=models.CASCADE, related_name="priorizaciones"
