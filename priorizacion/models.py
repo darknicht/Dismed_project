@@ -59,7 +59,7 @@ class Estimacion(models.Model):
 
 
 class Priorizacion(models.Model):
-    pre_priorizacion = models.ForeignKey(
+    pre_estimacion = models.ForeignKey(
         Estimacion, on_delete=models.CASCADE, related_name="priorizaciones"
     )
     matriz_dispositivo = models.ForeignKey(
@@ -85,4 +85,4 @@ class Priorizacion(models.Model):
     )
 
     def __str__(self):
-        return f"Priorización de {self.pre_priorizacion.dispositivo.nombre}"
+        return f"Priorización de {self.pre_estimacion.dispositivo.nombre}"
