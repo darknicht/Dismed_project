@@ -12,10 +12,10 @@ import re
 
 
 def parse_usd(value, decimals=2):
-    pattern = r"^USD\s?\d{1,3}(,\d{3})*(\.\d{2})?$"
+    pattern = r"^USD\s?\d{1,3}(.\d{3})*(,\d{2})?$"  # Adjust the pattern
     if re.match(pattern, value) is not None:
-        # Remove the currency symbol and replace the comma with nothing
-        value = value.replace("USD", "").replace(",", "")
+        # Remove the currency symbol and replace comma with dot
+        value = value.replace("USD", "").replace(".", "").replace(",", ".")
         return Decimal(value).quantize(Decimal(f"0.{decimals * '0'}"))
     else:
         raise ValueError("Formato USD inválido")
@@ -64,9 +64,13 @@ def estimacion_view(request, preseleccion_id):
         for dispositivo in dispositivos_preseleccionados:
             try:
                 perioci_consumo = request.POST.get(f"perioci_consumo_{dispositivo.id}")
-                consumo_prom_proyec = request.POST.get(f"consumo_prom_proyec_{dispositivo.id}")
+                consumo_prom_proyec = request.POST.get(
+                    f"consumo_prom_proyec_{dispositivo.id}"
+                )
                 cant_pend_entre = request.POST.get(f"cant_pend_entre_{dispositivo.id}")
-                saldo_bodega_actual = request.POST.get(f"saldo_bodega_actual_{dispositivo.id}")
+                saldo_bodega_actual = request.POST.get(
+                    f"saldo_bodega_actual_{dispositivo.id}"
+                )
                 prec_unit_ref = parse_usd(
                     request.POST.get(f"prec_unit_ref_{dispositivo.id}"), decimals=4
                 )

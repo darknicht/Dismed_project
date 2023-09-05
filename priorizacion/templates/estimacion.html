@@ -90,7 +90,7 @@ Estimación para {{ unidad.nombre_unidad }}
           {% for dispositivo in dispositivos %}
             <tr>
               <td class="text-center align-middle">
-                <button type="button" class="btn btn-sm btn-primary">Editar</button>
+                <button type="button" class="btn btn-warning btn-sm editar-btn" data-id="{{ dispositivo.id }}">Editar</button>
                 <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
               </td>
                 <td class="text-center align-middle">{{ dispositivo.item_nro }}</td>
@@ -188,8 +188,8 @@ Estimación para {{ unidad.nombre_unidad }}
   function formatCurrencyInput(input, decimals) {
       // Get the current input value
       let value = input.value;
-      // Remove non-numeric characters
-      value = value.replace(/[^\d.]/g, '');
+      // Remove non-numeric characters and replace comma with dot
+      value = value.replace(/[^\d,]/g, '').replace(',', '.');
       // Convert the value to a number
       let numericValue = parseFloat(value);
       // Format the value with the specified number of decimals
@@ -200,7 +200,35 @@ Estimación para {{ unidad.nombre_unidad }}
           maximumFractionDigits: decimals,
       });
       // Update the input value with the formatted value
-      input.value = formattedValue;
+      input.value = formattedValue.replace('.', ','); // Replace dot with comma
   }
 </script>
+<script>
+  $(document).ready(function() {
+    $('.editar-btn').click(function() {
+      const dispositivoId = $(this).data('id');
+      $.ajax({
+        url: `/obtener_datos_dispositivo/${dispositivoId}/`, // URL de la vista que devuelve los datos del dispositivo en formato JSON
+        method: 'GET',
+        success: function(data) {
+          // Aquí puedes llenar un formulario con los datos recibidos y mostrarlo para edición
+          // Por ejemplo, puedes llenar los campos de un modal
+          $('#editModal').modal('show');
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+          $('#perioci_consumo_select').val(data.perioci_consumo);
+          $('#saldo_bodega_actual_').val(data.consumo_prom_proyec);
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+          $('#consumo_prom_proyec_input').val(data.consumo_prom_proyec);
+        },
+        error: function() {
+          // Manejo de errores
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}

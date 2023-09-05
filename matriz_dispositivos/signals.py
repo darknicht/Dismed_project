@@ -6,10 +6,10 @@ import re
 
 
 def parse_usd(value, decimals=2):
-    pattern = r"^USD\s?\d{1,3}(,\d{3})*(\.\d{2})?$"
+    pattern = r"^USD\s?\d{1,3}(.\d{3})*(,\d{2})?$"  # Cambio en el patrón de búsqueda
     if re.match(pattern, value) is not None:
-        # Remove the currency symbol and replace the comma with nothing
-        value = value.replace("USD", "").replace(",", "")
+        # Remove the currency symbol and replace comma with nothing, and replace dot with comma
+        value = value.replace("USD", "").replace(".", "").replace(",", ".")
         return Decimal(value).quantize(Decimal(f"0.{decimals * '0'}"))
     else:
         return Decimal(0)
