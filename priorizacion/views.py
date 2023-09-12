@@ -10,7 +10,6 @@ from matriz_dispositivos.models import Periodo
 from decimal import Decimal
 import re
 
-
 def parse_usd(value, decimals=4):
     # Patrón corregido para escapar el punto
     pattern = r"^USD\s?\d{1,3}(\.\d{3})*(,\d{2})?$"
@@ -32,6 +31,14 @@ def parse_usd(value, decimals=4):
         decimal_value = Decimal(formatted_value)
 
         return decimal_value
+
+def parse_usd(value, decimals=2):
+    pattern = r"^USD\s?\d{1,3}(.\d{3})*(,\d{2})?$"  # Adjust the pattern
+    if re.match(pattern, value) is not None:
+        # Remove the currency symbol and replace comma with dot
+        value = value.replace("USD", "").replace(".", "").replace(",", ".")
+        return Decimal(value).quantize(Decimal(f"0.{decimals * '0'}"))
+
     else:
         raise ValueError("Formato USD inválido")
 
@@ -60,8 +67,10 @@ def preseleccion_view(request):
             nivel_atencion_queries
         ).order_by("id")
 
+
         # 25 dispositivos por página
         paginator = Paginator(dispositivos_list, 20)
+        paginator = Paginator(dispositivos_list, 20)  # 25 dispositivos por página
         page_number = request.GET.get("page")
         dispositivos = paginator.get_page(page_number)
 

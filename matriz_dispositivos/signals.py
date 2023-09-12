@@ -1,37 +1,8 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from .models import MatrizDispositivos, Periodo
-from decimal import Decimal
-import re
 
-
-def parse_usd(value, decimals=2):
-    pattern = r"^USD\s?\d{1,3}(\.\d{3})*(,\d{2})?$"  # Patrón modificado para incluir punto como separador de miles
-    if re.match(pattern, value) is not None:
-        # Remove the currency symbol and replace comma with dot
-        value = value.replace("USD", "").replace(",", "").replace(".", ",")
-        
-        # Split the value into integer and decimal parts
-        parts = value.split(",")
-        integer_part = parts[0]
-        decimal_part = parts[1] if len(parts) > 1 else ""
-        
-        # Add trailing zeros to decimal part if needed
-        decimal_part = decimal_part.ljust(decimals, "0")
-        
-        # Combine integer and decimal parts
-        formatted_value = f"{integer_part}.{decimal_part}"
-        
-        return Decimal(formatted_value)
-    else:
-        return Decimal(0)
-
-
-
-# Cálculos para valores de moneda
-
-
-# Calcula Proyección de Saldo (PS)
+#Calcula Proyección de Saldo (PS)
 def calcular_proyecc_saldo(instance):
     saldo_bodega_actual = parse_usd(instance.saldo_bodega_actual)
     consumo_prom_proyec = parse_usd(instance.consumo_prom_proyec)
