@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class UnidadMedica(models.Model):
     idudm = models.AutoField(primary_key=True)
     uni_codigo = models.IntegerField()
@@ -21,6 +22,9 @@ class UnidadMedica(models.Model):
     cod_parroquia = models.IntegerField()
     zona = models.CharField(max_length=255)
     distrito = models.CharField(max_length=255)
-    
+
+    def __str__(self):
+        return self.nombre_unidad
+
     class Meta:
-        db_table = 'unidadesmd'
+        db_table = "unidadesmd"
