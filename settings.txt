@@ -31,3 +31,26 @@ configuración:
         Require all granted
     </Directory>
 </VirtualHost>
+
+
+Para ejecutar el script, guárdelo en un archivo con la extensión .sh, por ejemplo, exportar.sh, y otorgue permisos de ejecución:
+
+bash
+Copy code
+chmod +x exportar.sh
+Luego, ejecútelo con:
+
+bash
+Copy code
+./exportar.sh
+
+Para utilizar este script, guárdelo en un archivo con la extensión .sh, por ejemplo, importar.sh. Luego, otorgue permisos de ejecución al script con el siguiente comando:
+
+bash
+Copy code
+chmod +x importar.sh
+Finalmente, ejecute el script con:
+
+bash
+Copy code
+./importar.sh

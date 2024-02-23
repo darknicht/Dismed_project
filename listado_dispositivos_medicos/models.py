@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class ListadoDispositivosMedicos(models.Model):
     id = models.AutoField(primary_key=True)
     item_nro = models.IntegerField()
@@ -22,4 +23,4 @@ class ListadoDispositivosMedicos(models.Model):
     espec_subespec = models.CharField(max_length=255)
 
     class Meta:
-        db_table = 'listado_dispositivos_medicos'
+        db_table = "listado_dispositivos_medicos"

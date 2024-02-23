@@ -1,6 +1,7 @@
 from django.db import models
 from unidadesmd.models import UnidadMedica
 
+
 class MatrizMedicamentos(models.Model):
     id = models.AutoField(primary_key=True)
     unidad_medica = models.ForeignKey(UnidadMedica, on_delete=models.CASCADE)
@@ -52,6 +53,6 @@ class MatrizMedicamentos(models.Model):
     user_modify = models.CharField(max_length=255)
     modify_time = models.DateTimeField(auto_now=True)
     user_create = models.CharField(max_length=255)
-    
+
     class Meta:
-        db_table = 'matriz_medicamentos'
+        db_table = "matriz_medicamentos"
