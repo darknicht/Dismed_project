@@ -1,23 +1,55 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from .models import MatrizDispositivos, Periodo
+from decimal import Decimal
+import re
 
-#Calcula Proyección de Saldo (PS)
+
+def parse_usd(value, decimals=2):
+    # Patrón modificado para incluir punto como separador de miles
+    pattern = r"^USD\s?\d{1,3}(\.\d{3})*(,\d{2})?$"
+    if re.match(pattern, value) is not None:
+        # Remove the currency symbol and replace comma with dot
+        value = value.replace("USD", "").replace(",", "").replace(".", ",")
+
+        # Split the value into integer and decimal parts
+        parts = value.split(",")
+        integer_part = parts[0]
+        decimal_part = parts[1] if len(parts) > 1 else ""
+
+        # Add trailing zeros to decimal part if needed
+        decimal_part = decimal_part.ljust(decimals, "0")
+
+        # Combine integer and decimal parts
+        formatted_value = f"{integer_part}.{decimal_part}"
+
+        return Decimal(formatted_value)
+    else:
+        return Decimal(0)
+
+
+# Cálculos para valores de moneda
+
+
+# Calcula Proyección de Saldo (PS)
 def calcular_proyecc_saldo(instance):
     saldo_bodega_actual = parse_usd(instance.saldo_bodega_actual)
     consumo_prom_proyec = parse_usd(instance.consumo_prom_proyec)
 
     if instance.perioci_consumo == "Mensual":
         return max(
-            saldo_bodega_actual - consumo_prom_proyec * Decimal("3"), Decimal("0")
+            saldo_bodega_actual - consumo_prom_proyec *
+            Decimal("3"), Decimal("0")
         )
     elif instance.perioci_consumo == "Semestral":
         return max(
-            saldo_bodega_actual - consumo_prom_proyec * Decimal("0.5"), Decimal("0")
+            saldo_bodega_actual - consumo_prom_proyec *
+            Decimal("0.5"), Decimal("0")
         )
     else:
         return max(
-            saldo_bodega_actual - consumo_prom_proyec * Decimal("0.25"), Decimal("0")
+            saldo_bodega_actual - consumo_prom_proyec *
+            Decimal("0.25"), Decimal("0")
         )
 
 
@@ -108,7 +140,8 @@ def calcular_cant_final_required(instance):
     if instance.cant_program_inicial > 0:
         return instance.cant_program_inicial + instance.cant_devol_prestam
 
-    periodicidad_obj = Periodo.objects.get(periodicidad=instance.perioci_consumo)
+    periodicidad_obj = Periodo.objects.get(
+        periodicidad=instance.perioci_consumo)
     factor_1 = periodicidad_obj.factor
     factor_2 = periodicidad_obj.matriz_value
 
